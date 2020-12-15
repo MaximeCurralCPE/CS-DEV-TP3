@@ -19,7 +19,7 @@ tirs_en_cours = []
 aliens_vivants = []
 
 class alien:
-
+    # classe des vaisseaux ennemis
     def __init__(self, nom, x, y):
         self.nom = nom
         self.x = x
@@ -60,7 +60,7 @@ class alien:
 
 
 class vaisseau:
-    
+    # classe du vaisseau du joueur
     def __init__(self):
         self.x = 3
         
