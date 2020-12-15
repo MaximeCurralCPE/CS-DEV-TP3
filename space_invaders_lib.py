@@ -53,25 +53,35 @@ class vaisseau:
         
     def recup_touche(self):
         fenetre = tk.Tk()
-        fenetre.bind("<Key>", joueur.mouvement)
+        fenetre.bind("<Key>", joueur.action)
         fenetre.mainloop()
 
-    def mouvement(self, touche):
+    def action(self, touche):
         caractere = touche.char
         if caractere == 'q':
-            commande = 'gauche'
+            print('a gauche')
+            self.mouvement('gauche')
         elif caractere == 'd':
-            commande = 'droite'
+            print('a droite')
+            self.mouvement('droite')
         elif caractere == ' ':
-            commande = 'tir'
-        return commande
-        print(commande)
+            print('tir')
+            self.tir()
 
+    def mouvement(self,cote):
+         if cote == 'gauche' and self.x > 0:
+            self.x -= 1
+         if cote == 'droite' and self.x < x_max:
+            self.x -= 1
 
+'''
 joueur = vaisseau()
 joueur.recup_touche()
 
-
+x_max = 6
+y_max = 6
+global x_max
+global y_max
 
 
 
@@ -79,4 +89,3 @@ joueur.recup_touche()
 blob = alien('blob',0,0)
 print(blob)
 blob.mouvement(6,6)
-'''
