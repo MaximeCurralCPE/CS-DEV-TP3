@@ -64,9 +64,11 @@ class vaisseau:
         caractere = touche.char
         if caractere == 'q':
             print('a gauche')
+            self.print_coord()
             self.mouvement('gauche')
         elif caractere == 'd':
             print('a droite')
+            self.print_coord()
             self.mouvement('droite')
         elif caractere == ' ':
             print('tir')
@@ -76,7 +78,7 @@ class vaisseau:
         if cote == 'gauche' and self.x > 0:
             self.x -= 1
         if cote == 'droite' and self.x < x_max:
-            self.x -= 1
+            self.x += 1
 
     def tir(self):
         global nb_tirs
@@ -84,20 +86,26 @@ class vaisseau:
         numero_tir = nb_tirs
         nom_tir = 'tir' + str(numero_tir)
         nom_tir = tir(nom_tir, self.x)
+        nom_tir.lancement()
         print(nom_tir)
+
+    def print_coord(self):
+        # affiche les coordonnées du vaisseau du joueur
+        print('x=' + str(self.x))
 
 class tir:
 
     def __init__(self, nom_tir, x):
         self.x = x
-        self.y = 0
+        self.y = y_max
         self.nom = nom_tir
 
     def __str__(self):
         return str(self.nom)
 
-    def mouvement(self):
+    def lancement(self):
         while self.y > 0:
+            self.print_coord()
             time.sleep(.5)
             self.y -= 1
 
