@@ -6,13 +6,6 @@ Date de creation : 15/12/2020
 
 from tkinter import Tk, Label, Button, Frame, PhotoImage, Canvas, Entry
 
-
-# ====== code ============
-
-
-
-
-
 # ========= TK =============
 
 fenetre = Tk()
