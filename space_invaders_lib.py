@@ -7,46 +7,55 @@ Date de creation : 15/12/2020
 import time
 import tkinter as tk
 
+# paramètres du jeu
 x_max = 6
 y_max = 6
+delai_mvt_alien = .001
+delai_mvt_tir = .01
+
+# initialisation des variables
 nb_tirs = 0
+tirs_en_cours = []
+aliens_vivants = []
 
 class alien:
 
-    def __init__(self, identifiant, x, y):
-        self.identifiant = identifiant
+    def __init__(self, nom, x, y):
+        self.nom = nom
         self.x = x
         self.y = y
+        aliens_vivants.append(self)
         
     def __str__(self):
-        return str(self.identifiant)
+        return str(self.nom)
 
     def mouvement(self):
         # fait bouger le vaisseau alien en zig-zag jusqu'en bas de l'écran
+        global delai_mvt_alien
         self.print_coord()
         while self.y < y_max:
             while self.x < x_max:
                 # l'alien bouge de gauche à droite jusqu'à atteindre le bord droit de l'écran
-                time.sleep(.5)
+                time.sleep(delai_mvt_alien)
                 self.x += 1
                 self.print_coord()
-            time.sleep(.5)
+            time.sleep(delai_mvt_alien)
             self.y += 1
             # l'alien descend d'une case
             self.print_coord()
             while self.x > 0:
                 # l'alien bouge de droite à gauche jusqu'à atteindre le bord gauche de l'écran
-                time.sleep(.5)
+                time.sleep(delai_mvt_alien)
                 self.x -= 1
                 self.print_coord()
-            time.sleep(.5)
+            time.sleep(delai_mvt_alien)
             self.y += 1
             # l'alien descend d'une case
             self.print_coord()
             
     def print_coord(self):
         # affiche les coordonnées du vaisseau alien
-        print('x=' + str(self.x), 'y=' + str(self.y))
+        print(self.nom + ' : {' + 'x=' + str(self.x) + ' ; y=' + str(self.y) + '}')
 
 
 
@@ -64,14 +73,13 @@ class vaisseau:
         caractere = touche.char
         if caractere == 'q':
             print('a gauche')
-            self.print_coord()
             self.mouvement('gauche')
+            self.print_coord()
         elif caractere == 'd':
             print('a droite')
-            self.print_coord()
             self.mouvement('droite')
+            self.print_coord()
         elif caractere == ' ':
-            print('tir')
             self.tir()
 
     def mouvement(self,cote):
@@ -87,7 +95,6 @@ class vaisseau:
         nom_tir = 'tir' + str(numero_tir)
         nom_tir = tir(nom_tir, self.x)
         nom_tir.lancement()
-        print(nom_tir)
 
     def print_coord(self):
         # affiche les coordonnées du vaisseau du joueur
@@ -99,29 +106,52 @@ class tir:
         self.x = x
         self.y = y_max
         self.nom = nom_tir
+        tirs_en_cours.append(self)
 
     def __str__(self):
         return str(self.nom)
 
     def lancement(self):
-        while self.y > 0:
+        global delai_mvt_tir
+        alien_touche = 0
+        while alien_touche == 0 and self.y > 0:
             self.print_coord()
-            time.sleep(.5)
+            time.sleep(delai_mvt_tir)
             self.y -= 1
+            for alien in aliens_vivants:
+                if alien.x == self.x and alien.y == self.y:
+                    print(alien.nom + ' touché !')
+                    aliens_vivants.remove(alien)
+                    del alien
+                    alien_touche = 1
+        tirs_en_cours.remove(self)
+        del self
 
     def print_coord(self):
         # affiche les coordonnées du tir
-        print('x=' + str(self.x), 'y=' + str(self.y))
+        print(self.nom + ' : {' + 'x=' + str(self.x) + ' ; y=' + str(self.y) + '}')
 
 
 
-joueur = vaisseau()
-joueur.recup_touche()
+def nouveau_jeu(nb_aliens):
+    for i in range(nb_aliens):
+        nom_alien = 'alien_' + str(i + 1)
+        nom_alien = alien(nom_alien, 0, 0)
+        nom_alien.mouvement()
+    joueur = vaisseau()
+    joueur.recup_touche()
 
 
-
+alien_test = alien('alien_test',3,3)
+print('aliens vivants : ' + str(aliens_vivants))
+nouveau_jeu(3)
 '''
 blob = alien('blob',0,0)
 print(blob)
 blob.mouvement()
+
+
+joueur = vaisseau()
+joueur.recup_touche()
 '''
+
