@@ -7,16 +7,20 @@ Date de creation : 15/12/2020
 import time
 import tkinter as tk
 
-# paramètres du jeu
-x_max = 6
-y_max = 6
-delai_mvt_alien = .001
-delai_mvt_tir = .01
+########## paramètres du jeu ##########
 
-# initialisation des variables
+x_max = 6 # largeur de la zone de jeu 
+y_max = 6 # hauteur de la zone de jeu
+delai_mvt_alien = .001 # délai entre chaque mouvement d'alien
+delai_mvt_tir = .01 # délai entre chaque mouvement de tir
+
+########## initialisation des variables ##########
+
 nb_tirs = 0
 tirs_en_cours = []
 aliens_vivants = []
+
+
 
 class alien:
     # classe des vaisseaux ennemis
@@ -101,7 +105,7 @@ class vaisseau:
         print('x=' + str(self.x))
 
 class tir:
-
+    # classe des tirs du joueur
     def __init__(self, nom_tir, x):
         self.x = x
         self.y = y_max
@@ -112,6 +116,7 @@ class tir:
         return str(self.nom)
 
     def lancement(self):
+        # lance le tir depuis la position du joueur et le fait monter jusqu'à toucher un alien ou sortir de l'écran
         global delai_mvt_tir
         alien_touche = 0
         while alien_touche == 0 and self.y > 0:
@@ -143,15 +148,15 @@ def nouveau_jeu(nb_aliens):
 
 
 alien_test = alien('alien_test',3,3)
+'''
 print('aliens vivants : ' + str(aliens_vivants))
 nouveau_jeu(3)
-'''
+
 blob = alien('blob',0,0)
 print(blob)
 blob.mouvement()
-
+'''
 
 joueur = vaisseau()
 joueur.recup_touche()
-'''
 
