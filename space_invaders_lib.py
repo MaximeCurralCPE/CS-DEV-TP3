@@ -7,13 +7,14 @@ Date de creation : 15/12/2020
 import time
 from random import uniform
 import threading
+import logging
 import tkinter as tk
 
 ########## paramètres du jeu ##########
 
 x_max = 5 # largeur de la zone de jeu 
 y_max = 5 # hauteur de la zone de jeu
-delai_mvt_alien = 10 # délai entre chaque mouvement d'alien
+delai_mvt_alien = 1 # délai entre chaque mouvement d'alien
 delai_tir_alien = .02 # délai moyen entre les tirs d'un même alien
 delai_mvt_tir = .02 # délai entre chaque mouvement de tir
 nombre_vies = 3 # nombre de vies du joueur
@@ -25,6 +26,7 @@ nb_tirs_joueur = 0
 nb_tirs_aliens = 0
 tirs_en_cours = []
 aliens_vivants = []
+logging.basicConfig(level=logging.DEBUG,format='%(threadName)s')
 
 
 
@@ -35,7 +37,7 @@ class alien:
         self.x = x
         self.y = y
         # la ligne qui suit lance un thread qui exécute les tirs de l'alien, cela permet de faire bouger plusieurs tirs à la fois indépendamment
-        threading.Thread(target=self.tir).start()
+        threading.Thread(name=str(self.nom) + '_tir_' + str(nb_tirs_aliens), target=self.tir).start()
 
     def __str__(self):
         return str(self.nom)
@@ -43,26 +45,26 @@ class alien:
     def mouvement(self):
         # fait bouger le vaisseau alien en zig-zag jusqu'en bas de l'écran
         global delai_mvt_alien
-        self.print_coord()
+        logging.debug(self.print_coord())
         while self.y < y_max:
             while self.x < x_max:
                 # l'alien bouge de gauche à droite jusqu'à atteindre le bord droit de l'écran
                 time.sleep(delai_mvt_alien)
                 self.x += 1
-                self.print_coord()
+                logging.debug(self.print_coord())
             time.sleep(delai_mvt_alien)
             self.y += 1
             # l'alien descend d'une case
-            self.print_coord()
+            logging.debug(self.print_coord())
             while self.x > 0:
                 # l'alien bouge de droite à gauche jusqu'à atteindre le bord gauche de l'écran
                 time.sleep(delai_mvt_alien)
                 self.x -= 1
-                self.print_coord()
+                logging.debug(self.print_coord())
             time.sleep(delai_mvt_alien)
             self.y += 1
             # l'alien descend d'une case
-            self.print_coord()
+            logging.debug(self.print_coord())
             
     def print_coord(self):
         # affiche les coordonnées du vaisseau alien
@@ -101,11 +103,11 @@ class vaisseau:
         if caractere == 'q':
             print('a gauche')
             self.mouvement('gauche')
-            self.print_coord()
+            logging.debug(self.print_coord())
         elif caractere == 'd':
             print('a droite')
             self.mouvement('droite')
-            self.print_coord()
+            logging.debug(self.print_coord())
         elif caractere == ' ':
             # la ligne qui suit lance un thread qui exécute le tir du joueur, cela permet de gérer plusieurs tirs indépendamment
             threading.Thread(target=self.tir).start()
@@ -157,7 +159,7 @@ class tir_joueur(tir):
         global delai_mvt_tir
         alien_touche = 0
         while alien_touche == 0 and self.y > 0:
-            self.print_coord()
+            logging.debug(self.print_coord())
             time.sleep(delai_mvt_tir)
             self.y -= 1
             for alien in aliens_vivants:
@@ -183,7 +185,7 @@ class tir_alien(tir):
         global nombre_vies
         joueur_touche = 0
         while joueur_touche == 0 and self.y < y_max:
-            self.print_coord()
+            logging.debug(self.print_coord())
             time.sleep(delai_mvt_tir)
             self.y += 1
             if joueur.x == self.x and self.y == y_max:
@@ -199,12 +201,12 @@ def nouveau_jeu(nb_aliens):
         one_alien = alien('alien_' + str(i + 1), 0, 0)
         aliens_vivants.append(one_alien)
         # la ligne qui suit lance un thread qui exécute les mouvements de l'alien, cela permet de faire bouger plusieurs aliens à la fois indépendamment
-        threading.Thread(target=one_alien.mouvement).start()
-    joueur = vaisseau()
+        threading.Thread(name='thread_alien_' + str(i + 1), target=one_alien.mouvement).start()
     joueur.recup_touche()
 
 joueur = vaisseau()
 nouveau_jeu(nombre_aliens)
+
 '''
 
 alien_test_1 = alien('alien_test_1',1,0)
