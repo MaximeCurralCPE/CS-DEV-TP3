@@ -11,12 +11,13 @@ import tkinter as tk
 
 ########## paramètres du jeu ##########
 
-x_max = 6 # largeur de la zone de jeu 
-y_max = 6 # hauteur de la zone de jeu
-delai_mvt_alien = .001 # délai entre chaque mouvement d'alien
-delai_tir_alien = 2 # délai moyen entre les tirs d'un même alien
-delai_mvt_tir = .01 # délai entre chaque mouvement de tir
+x_max = 5 # largeur de la zone de jeu 
+y_max = 5 # hauteur de la zone de jeu
+delai_mvt_alien = 10 # délai entre chaque mouvement d'alien
+delai_tir_alien = .02 # délai moyen entre les tirs d'un même alien
+delai_mvt_tir = .02 # délai entre chaque mouvement de tir
 nombre_vies = 3 # nombre de vies du joueur
+nombre_aliens = 3 # nombre d'aliens apparaissant dans le jeu
 
 ########## initialisation ##########
 
@@ -33,9 +34,9 @@ class alien:
         self.nom = nom
         self.x = x
         self.y = y
-        aliens_vivants.append(self)
-        alien.tir(self)
-        
+        # la ligne qui suit lance un thread qui exécute les tirs de l'alien, cela permet de faire bouger plusieurs tirs à la fois indépendamment
+        threading.Thread(target=self.tir).start()
+
     def __str__(self):
         return str(self.nom)
 
@@ -76,9 +77,10 @@ class alien:
             time.sleep(attente)
             nb_tirs_aliens += 1
             numero_tir = nb_tirs_aliens
-            nom_tir = 'tir_alien_' + str(numero_tir)
+            nom_tir = str(self.nom) + '_tir_' + str(numero_tir)
             nom_tir = tir_alien(nom_tir, self.x, self.y)
             nom_tir.lancement()
+
 
 
 class vaisseau:
@@ -87,7 +89,7 @@ class vaisseau:
         self.x = 3
         
     def __str__(self):
-        return str(joueur)
+        return str('joueur')
 
     def recup_touche(self):
         fenetre = tk.Tk()
@@ -105,7 +107,8 @@ class vaisseau:
             self.mouvement('droite')
             self.print_coord()
         elif caractere == ' ':
-            self.tir()
+            # la ligne qui suit lance un thread qui exécute le tir du joueur, cela permet de gérer plusieurs tirs indépendamment
+            threading.Thread(target=self.tir).start()
 
     def mouvement(self,cote):
         if cote == 'gauche' and self.x > 0:
@@ -124,6 +127,8 @@ class vaisseau:
     def print_coord(self):
         # affiche les coordonnées du vaisseau du joueur
         print('x=' + str(self.x))
+
+
 
 class tir:
     # classe des tirs du joueur
@@ -189,24 +194,33 @@ class tir_alien(tir):
 
 
 
-
 def nouveau_jeu(nb_aliens):
     for i in range(nb_aliens):
-        nom_alien = 'alien_' + str(i + 1)
-        nom_alien = alien(nom_alien, 0, 0)
-        nom_alien.mouvement()
+        one_alien = alien('alien_' + str(i + 1), 0, 0)
+        aliens_vivants.append(one_alien)
+        # la ligne qui suit lance un thread qui exécute les mouvements de l'alien, cela permet de faire bouger plusieurs aliens à la fois indépendamment
+        threading.Thread(target=one_alien.mouvement).start()
     joueur = vaisseau()
     joueur.recup_touche()
 
-
 joueur = vaisseau()
-alien_test = alien('alien_test',2,0)
-joueur.recup_touche()
+nouveau_jeu(nombre_aliens)
 '''
-print('aliens vivants : ' + str(aliens_vivants))
-nouveau_jeu(3)
 
+alien_test_1 = alien('alien_test_1',1,0)
+alien_test_2 = alien('alien_test_2',2,0)
+alien_test_3 = alien('alien_test_3',3,0)
+
+joueur.recup_touche()
 blob = alien('blob',0,0)
+
+print('aliens vivants : ' + str(aliens_vivants))
+
+
 print(blob)
 blob.mouvement()
 '''
+
+
+
+
