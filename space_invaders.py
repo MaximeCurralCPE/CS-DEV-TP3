@@ -6,8 +6,9 @@ Date de creation : 15/12/2020
 To Do:
 - Modifier les défenses pour qu'elles se détruisent au fur et à mesure des dégats
 - Rajouter une ligne d'aliens
-- Différents niveaux
-
+- Différents niveaux (boss?)
+- cheat codes
+- réquilibrer les vitesses
 '''
 from tkinter import Tk, Label, Button, Frame, PhotoImage, Canvas, Entry, StringVar
 from random import randint, uniform
