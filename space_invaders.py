@@ -47,7 +47,7 @@ alienwidth = 30
 alienheight = 21
 
 # Paramètres de positionnement des aliens
-aliengap = 10
+aliengap = 15
 position_ligne1 = 50
 nb_ennemis = 15
 nb_ligne = 2
@@ -71,14 +71,14 @@ shield_hp = 7
 Paramètres des tirs alliés et ennemies
 '''
 # vitesse balles
-bulletvelocity = 1
+bulletvelocity = 2
 
 bullets = []
-bulletdelayalien = 3000  
+bulletdelayalien = 1000
 
 playershoot_time = 0
 alienbullets = []
-shootdelay = 1
+shootdelay = .8
 
 '''
 Score et points
@@ -128,7 +128,7 @@ class shoot:
         # Création de la balle au niveau du joueur
         self.x = vaisseau.x
         self.y = vaisseau.y
-        self.body = zone_jeu.create_line(self.x, self.y-4 , self.x, self.y, fill = 'white')
+        self.body = zone_jeu.create_line(self.x, self.y-4 , self.x, self.y, fill = 'white', width=5)
         self.bulletstatus = True
         shoot.cpt += 1
     
@@ -196,7 +196,7 @@ class shootinvader:
         # Création de la balle au niveau de l'invader
         self.x = liste_invader[i].x
         self.y = liste_invader[i].y
-        self.body = zone_jeu.create_line(self.x, self.y-4, self.x, self.y, fill = 'white')
+        self.body = zone_jeu.create_line(self.x, self.y-4, self.x, self.y, fill = 'lightgreen', width=5)
         self.bulletstatus = True
         self.movement()
 
@@ -358,7 +358,6 @@ def win():
             gagne = False
     # Affichage d'un message à la place de la zone de jeu et apparition du bouton pour rejouer
     if gagne:
-        zone_jeu.grid_remove()
         label_gp.config(text = 'Félicitations ! Pas mal de chances .. ( ͡° ͜ʖ ͡°)')
         label_gp.grid()
         zone_jeu.delete("all")
