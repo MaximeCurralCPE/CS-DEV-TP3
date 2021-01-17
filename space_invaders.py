@@ -173,6 +173,7 @@ class shoot:
             for i in liste_invader:
                 if i.vivant and self.y >= i.y and self.y <= i.y + alienheight and self.x <= i.x + alienwidth and self.x >= i.x:
                     self.remove()
+                    print("[CONSOLE LOG] An alien got hit")
                     zone_jeu.delete(i.body)
                     i.vivant = False
                     invader.vitesse += acceleration
@@ -214,6 +215,7 @@ class shootinvader:
             self.bulletstatus = False
             zone_jeu.delete(self.body)
             del alienbullets[0]
+            
         # Detection de la balle lorsqu'elle touche le joueur
         elif self.y >= vaisseau.y - 5 and self.y <= vaisseau.y + 5 and self.x <= vaisseau.x + shipwidth/2 and self.x >= vaisseau.x - shipwidth/2:
             self.bulletstatus = False
@@ -229,6 +231,7 @@ class shootinvader:
             for i in defenses:
                 if i.shield > 0 and self.x >= i.x and self.x <= i.x + shieldwidth and self.y >= defense.y and self.y <= defense.y + shieldheight:
                     i.majdefense()
+                    print("[CONSOLE LOG] Aliens hit a shield")
                     self.bulletstatus = False
                     zone_jeu.delete(self.body)
                     del alienbullets[0]
