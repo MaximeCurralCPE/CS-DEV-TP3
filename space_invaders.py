@@ -10,6 +10,7 @@ To Do:
 - cheat codes
 - réquilibrer les vitesses
 '''
+
 from tkinter import Tk, Label, Button, Frame, PhotoImage, Canvas, Entry, StringVar
 from random import randint, uniform
 from time import time
@@ -25,6 +26,8 @@ zj_height = 600
 '''
 Paramètres de vaisseau joueur
 '''
+nombre_vies = 3
+
 # Taille hitbox vaisseau
 shipwidth = 32
 shipheight = 32
@@ -119,26 +122,6 @@ class player:
         zone_jeu.itemconfig(self.body, image = joueurimg)
 
 
-class invader:
-    cpt = 0
-    def __init__(self):
-        invader.cpt += 1
-        self.cpt = invader.cpt
-        self.vivant = True
-        self.x = self.cpt * (aliengap + alienwidth)
-        invader.y = position_ligne1
-        invader.val = 1
-        invader.vitesse = alienspeed
-    
-    def Creation(self,alea):
-        # Création de l'apparence de l'invader
-        self.body = zone_jeu.create_image(self.x, self.y, anchor = 'nw', image = alea)
-
-    def maj_position(self):
-        # Déplace l'affichage de l'invader à la nouvelle position (x,y)
-        zone_jeu.coords(self.body, self.x, self.y)
-    
-
 class shoot:
     cpt = 0
     def __init__(self):
@@ -186,7 +169,28 @@ class shoot:
         zone_jeu.delete(self.body)
         del bullets[0]
         shoot.cpt -= 1
-                    
+
+
+class invader:
+    cpt = 0
+    def __init__(self):
+        invader.cpt += 1
+        self.cpt = invader.cpt
+        self.vivant = True
+        self.x = self.cpt * (aliengap + alienwidth)
+        invader.y = position_ligne1
+        invader.val = 1
+        invader.vitesse = alienspeed
+    
+    def Creation(self,alea):
+        # Création de l'apparence de l'invader
+        self.body = zone_jeu.create_image(self.x, self.y, anchor = 'nw', image = alea)
+
+    def maj_position(self):
+        # Déplace l'affichage de l'invader à la nouvelle position (x,y)
+        zone_jeu.coords(self.body, self.x, self.y)
+    
+
 class shootinvader:
     def __init__(self,i):
         # Création de la balle au niveau de l'invader
@@ -270,6 +274,9 @@ class defense:
     def remove(self):
         # Destruction de la défense
         zone_jeu.delete(self.body)
+
+
+
 
 
 def invadermovement():
