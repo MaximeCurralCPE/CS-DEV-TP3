@@ -17,7 +17,7 @@ from time import time
 
 gamestatus = False
 gamelost = True
-nombre_vies = 3
+
 
 # Zone de jeu
 zj_width = 800
@@ -27,6 +27,7 @@ zj_height = 600
 Paramètres de vaisseau joueur
 '''
 nombre_vies = 3
+vies = 3
 
 # Taille hitbox vaisseau
 shipwidth = 32
@@ -437,53 +438,54 @@ def quit():
 '''
 --------- Espace Tkinter ---------
 '''
-# Création de la fenêtre
-fenetre = Tk()
-fenetre.title("SPACE INVADER")
-fenetre.geometry("804x685")
-fenetre.resizable(False, False)
+if __name__ == "__main__":
+    # Création de la fenêtre
+    fenetre = Tk()
+    fenetre.title("SPACE INVADER")
+    fenetre.geometry("804x685")
+    fenetre.resizable(False, False)
 
-# Importation des ressources images
-joueurimg = PhotoImage(file = 'battleship.png')
-joueurimg_hit = PhotoImage(file = 'battleship_hit.png')
-alienimg = PhotoImage(file = 'Invader.png')
-alienimg2 = PhotoImage(file = 'Invader2.png')
-alienimg3 = PhotoImage(file = 'Invader3.png')
-alienimg4 = PhotoImage(file = 'Invader4.png')
-alienimg5 = PhotoImage(file = 'Invader5.png')
-liste = [alienimg, alienimg2, alienimg3, alienimg4, alienimg5]
-backg = PhotoImage(file = 'backg.png')
-backg2 = PhotoImage(file = 'Planets.png')
+    # Importation des ressources images
+    joueurimg = PhotoImage(file = 'battleship.png')
+    joueurimg_hit = PhotoImage(file = 'battleship_hit.png')
+    alienimg = PhotoImage(file = 'Invader.png')
+    alienimg2 = PhotoImage(file = 'Invader2.png')
+    alienimg3 = PhotoImage(file = 'Invader3.png')
+    alienimg4 = PhotoImage(file = 'Invader4.png')
+    alienimg5 = PhotoImage(file = 'Invader5.png')
+    liste = [alienimg, alienimg2, alienimg3, alienimg4, alienimg5]
+    backg = PhotoImage(file = 'backg.png')
+    backg2 = PhotoImage(file = 'Planets.png')
 
-# Zone supérieure possedant les informations du score et des vies restantes
-zone_info = Canvas(fenetre, width = zj_width, height = 50, bg = 'grey')
-zone_info.grid(row = 0, column = 0, columnspan = 2)
+    # Zone supérieure possedant les informations du score et des vies restantes
+    zone_info = Canvas(fenetre, width = zj_width, height = 50, bg = 'grey')
+    zone_info.grid(row = 0, column = 0, columnspan = 2)
 
-label_score= Label(zone_info, text = 'Score : 0',  bg = 'grey', fg = 'white')
-label_score.place(x = 20 , y = 18)
+    label_score= Label(zone_info, text = 'Score : 0',  bg = 'grey', fg = 'white')
+    label_score.place(x = 20 , y = 18)
 
-label_vie= Label(zone_info,text = "Vies : 3",  bg = 'grey', fg = 'white')
-label_vie.place(x = 745 , y = 18)
+    label_vie= Label(zone_info,text = "Vies : 3",  bg = 'grey', fg = 'white')
+    label_vie.place(x = 745 , y = 18)
 
-# Zone centrale avec le cadre du jeu
-zone_jeu = Canvas(fenetre, height = zj_height, width = zj_width, highlightthickness=0)
-zone_jeu.grid(row = 2, column = 0, columnspan = 2)
-zone_jeu.create_image(0, 0, anchor = 'nw', image = backg2)
-zone_jeu.focus_set()
-zone_jeu.bind('<Key>',Clavier)
+    # Zone centrale avec le cadre du jeu
+    zone_jeu = Canvas(fenetre, height = zj_height, width = zj_width, highlightthickness=0)
+    zone_jeu.grid(row = 2, column = 0, columnspan = 2)
+    zone_jeu.create_image(0, 0, anchor = 'nw', image = backg2)
+    zone_jeu.focus_set()
+    zone_jeu.bind('<Key>',Clavier)
 
-label_gp = Label(fenetre, text = 'Bravo !')
-label_gp.grid(row = 2, column = 0, columnspan = 2)
-label_gp.grid_remove()
+    label_gp = Label(fenetre, text = 'Bravo !')
+    label_gp.grid(row = 2, column = 0, columnspan = 2)
+    label_gp.grid_remove()
 
-# Zone inférieure pour les boutons
-zone_but = Canvas(fenetre, width = zj_width, height = 50)
-zone_but.grid(row = 5, column = 0, columnspan = 2, pady= 3)
+    # Zone inférieure pour les boutons
+    zone_but = Canvas(fenetre, width = zj_width, height = 50)
+    zone_but.grid(row = 5, column = 0, columnspan = 2, pady= 3)
 
-but_play = Button(zone_but, text = 'Jouer' , command = play)
-but_quit = Button(zone_but, text = 'Quitter', command = quit)
+    but_play = Button(zone_but, text = 'Jouer' , command = play)
+    but_quit = Button(zone_but, text = 'Quitter', command = quit)
 
-but_play.grid(row = 3, column = 0)
-but_quit.grid(row = 3, column = 1)
+    but_play.grid(row = 3, column = 0)
+    but_quit.grid(row = 3, column = 1)
 
-fenetre.mainloop()
+    fenetre.mainloop()
